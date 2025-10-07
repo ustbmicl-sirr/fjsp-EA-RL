@@ -1,0 +1,92 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Graphviz and add to PATH
+      run: |
+        if [[ "${{ runner.os }}" == "Linux" ]]; then
+          # apt-get installs to standard paths, no PATH modification needed
+          sudo apt-get update && sudo apt-get install -y graphviz libgraphviz-dev
+        elif [[ "${{ runner.os }}" == "macOS" ]]; then
+          # brew handles PATH automatically
+          brew install graphviz
+        elif [[ "${{ runner.os }}" == "Windows" ]]; then
+          choco install graphviz
+          # Add the Graphviz bin directory to the system PATH for subsequent steps
+          echo "C:\Program Files\Graphviz\bin" >> $GITHUB_PATH
+        fi
+      shell: bash
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install poetry==1.7
+
+        if [[ "${{ runner.os }}" == "macOS" ]]; then
+          # On macOS, tell the compiler where to find the brew-installed graphviz
+          CFLAGS="-I$(brew --prefix graphviz)/include" LDFLAGS="-L$(brew --prefix graphviz)/lib" poetry install --with test --extras "pygraphviz"
+        
+        elif [[ "${{ runner.os }}" == "Windows" ]]; then
+          # On Windows, tell the compiler where to find the choco-installed graphviz
+          # Note: The shell is bash, but we use Windows-style paths for the variables.
+          INCLUDE="C:\Program Files\Graphviz\include" LIB="C:\Program Files\Graphviz\lib" poetry install --with test --extras "pygraphviz"
+        
+        else # This covers Linux ("ubuntu-latest")
+          poetry install --with test --extras "pygraphviz"
+        fi
+      shell: bash
+
+    - name: Run tests and generate coverage report
+      run: poetry run pytest -v --cov=job_shop_lib --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install poetry==1.7
+        poetry install --only lint
+
+    - name: Run flake8
+      run: |
+        poetry run flake8
+
+    - name: Run mypy
+      run: |
+        poetry run mypy
