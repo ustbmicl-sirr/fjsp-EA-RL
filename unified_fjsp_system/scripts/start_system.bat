@@ -99,9 +99,9 @@ call :stop_services
 
 REM 启动后端
 echo %BLUE%[STEP]%NC% 启动后端API服务...
-cd web\backend
+cd ..\web\backend
 start /b python flask_api.py > %TEMP%\fjsp_backend.log 2>&1
-cd ..\..
+cd ..\..\scripts
 
 REM 等待后端启动
 echo %BLUE%[INFO]%NC% 等待后端服务启动...
@@ -127,7 +127,7 @@ if !BACKEND_READY!==1 (
 
 REM 启动前端
 echo %BLUE%[STEP]%NC% 启动前端Web应用...
-start /b streamlit run web\streamlit_app.py --server.port %FRONTEND_PORT% --server.address 0.0.0.0 --server.headless true > %TEMP%\fjsp_frontend.log 2>&1
+start /b streamlit run ..\web\streamlit_app.py --server.port %FRONTEND_PORT% --server.address 0.0.0.0 --server.headless true > %TEMP%\fjsp_frontend.log 2>&1
 
 REM 等待前端启动
 echo %BLUE%[INFO]%NC% 等待前端服务启动...
@@ -154,23 +154,29 @@ if !FRONTEND_READY!==1 (
 REM 显示状态
 echo.
 echo %CYAN%========================================%NC%
-echo %CYAN%🏭 统一FJSP系统启动完成%NC%
+echo %CYAN%🎉 统一FJSP系统启动完成%NC%
 echo %CYAN%========================================%NC%
 echo.
-echo %GREEN%📡 后端API服务:%NC% http://localhost:%BACKEND_PORT%
-echo %GREEN%🌐 前端Web应用:%NC% http://localhost:%FRONTEND_PORT%
+echo %GREEN%✅ 推荐访问 (Web界面):%NC%
+echo    🌐 http://localhost:%FRONTEND_PORT%
 echo.
-echo %YELLOW%📋 API文档:%NC%
-echo    健康检查: http://localhost:%BACKEND_PORT%/api/health
-echo    创建实例: POST http://localhost:%BACKEND_PORT%/api/instances
-echo    求解问题: POST http://localhost:%BACKEND_PORT%/api/solve
+echo %BLUE%🔧 后端API服务:%NC%
+echo    📡 健康检查: http://localhost:%BACKEND_PORT%/api/health
+echo    📋 API根路径: http://localhost:%BACKEND_PORT%/api/
+echo.
+echo %RED%⚠️  重要提示:%NC%
+echo    %RED%❌ 不要访问%NC%: http://localhost:%BACKEND_PORT% (会显示404)
+echo    %GREEN%✅ 请使用%NC%: http://localhost:%FRONTEND_PORT% (完整Web界面)
+echo.
+echo %YELLOW%🧪 快速测试:%NC%
+echo    curl http://localhost:%BACKEND_PORT%/api/health
 echo.
 echo %YELLOW%📁 日志文件:%NC%
-echo    后端日志: %TEMP%\fjsp_backend.log
-echo    前端日志: %TEMP%\fjsp_frontend.log
+echo    后端: %TEMP%\fjsp_backend.log
+echo    前端: %TEMP%\fjsp_frontend.log
 echo.
 echo %YELLOW%🛑 停止服务:%NC%
-echo    运行: %~nx0 stop
+echo    运行: %~nx0 stop 或按任意键
 echo.
 echo %CYAN%========================================%NC%
 echo.

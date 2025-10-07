@@ -307,11 +307,11 @@ start_backend() {
     fi
     
     # 启动Flask后端
-    cd web/backend
+    cd ../web/backend
     nohup python flask_api.py > /tmp/fjsp_backend.log 2>&1 &
     backend_pid=$!
     echo $backend_pid > "$BACKEND_PID_FILE"
-    cd ../..
+    cd ../../scripts
     
     # 等待后端启动
     log_info "等待后端服务启动..."
@@ -345,7 +345,7 @@ start_frontend() {
     fi
     
     # 启动Streamlit前端
-    nohup streamlit run web/streamlit_app.py --server.port $FRONTEND_PORT --server.address 0.0.0.0 --server.headless true > /tmp/fjsp_frontend.log 2>&1 &
+    nohup streamlit run ../web/streamlit_app.py --server.port $FRONTEND_PORT --server.address 0.0.0.0 --server.headless true > /tmp/fjsp_frontend.log 2>&1 &
     frontend_pid=$!
     echo $frontend_pid > "$FRONTEND_PID_FILE"
     
@@ -368,23 +368,29 @@ start_frontend() {
 show_status() {
     echo
     echo -e "${CYAN}========================================${NC}"
-    echo -e "${CYAN}🏭 统一FJSP系统启动完成${NC}"
+    echo -e "${CYAN}🎉 统一FJSP系统启动完成${NC}"
     echo -e "${CYAN}========================================${NC}"
     echo
-    echo -e "${GREEN}📡 后端API服务:${NC} http://localhost:$BACKEND_PORT"
-    echo -e "${GREEN}🌐 前端Web应用:${NC} http://localhost:$FRONTEND_PORT"
+    echo -e "${GREEN}✅ 推荐访问 (Web界面):${NC}"
+    echo -e "   🌐 ${CYAN}http://localhost:$FRONTEND_PORT${NC}"
     echo
-    echo -e "${YELLOW}📋 API文档:${NC}"
-    echo -e "   健康检查: http://localhost:$BACKEND_PORT/api/health"
-    echo -e "   创建实例: POST http://localhost:$BACKEND_PORT/api/instances"
-    echo -e "   求解问题: POST http://localhost:$BACKEND_PORT/api/solve"
+    echo -e "${BLUE}🔧 后端API服务:${NC}"
+    echo -e "   📡 健康检查: ${CYAN}http://localhost:$BACKEND_PORT/api/health${NC}"
+    echo -e "   📋 API根路径: ${CYAN}http://localhost:$BACKEND_PORT/api/${NC}"
+    echo
+    echo -e "${RED}⚠️  重要提示:${NC}"
+    echo -e "   ${RED}❌ 不要访问${NC}: http://localhost:$BACKEND_PORT (会显示404)"
+    echo -e "   ${GREEN}✅ 请使用${NC}: http://localhost:$FRONTEND_PORT (完整Web界面)"
+    echo
+    echo -e "${YELLOW}🧪 快速测试:${NC}"
+    echo -e "   curl http://localhost:$BACKEND_PORT/api/health"
     echo
     echo -e "${YELLOW}📁 日志文件:${NC}"
-    echo -e "   后端日志: /tmp/fjsp_backend.log"
-    echo -e "   前端日志: /tmp/fjsp_frontend.log"
+    echo -e "   后端: /tmp/fjsp_backend.log"
+    echo -e "   前端: /tmp/fjsp_frontend.log"
     echo
     echo -e "${YELLOW}🛑 停止服务:${NC}"
-    echo -e "   运行: $0 stop"
+    echo -e "   运行: $0 stop 或按 Ctrl+C"
     echo
     echo -e "${CYAN}========================================${NC}"
 }

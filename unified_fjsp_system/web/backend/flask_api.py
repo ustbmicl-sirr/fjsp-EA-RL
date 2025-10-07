@@ -598,6 +598,7 @@ if __name__ == '__main__':
     print("   GET  /api/results/<session_id>")
     print("   GET  /api/visualize/<session_id>/<type>")
     print("🔌 WebSocket: Real-time progress updates")
-    print("🌐 Server running on http://localhost:5000")
+    print("⚠️  注意: 请通过前端Web界面访问，不要直接访问后端根路径")
+    print("🌐 Backend API running on http://localhost:5001/api/")
 
     socketio.run(app, host='0.0.0.0', port=5001, debug=False, allow_unsafe_werkzeug=True)

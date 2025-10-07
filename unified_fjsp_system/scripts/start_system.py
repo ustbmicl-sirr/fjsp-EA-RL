@@ -265,7 +265,7 @@ def start_backend() -> Optional[subprocess.Popen]:
         return None
     
     # 启动Flask后端
-    backend_script = Path("web/backend/flask_api.py")
+    backend_script = Path("../web/backend/flask_api.py")
     if not backend_script.exists():
         log_error("后端脚本不存在")
         return None
@@ -303,7 +303,7 @@ def start_frontend() -> Optional[subprocess.Popen]:
         log_error(f"端口 {FRONTEND_PORT} 仍被占用")
         return None
     
-    frontend_script = Path("web/streamlit_app.py")
+    frontend_script = Path("../web/streamlit_app.py")
     if not frontend_script.exists():
         log_error("前端脚本不存在")
         return None
@@ -334,16 +334,22 @@ def show_status():
     """显示服务状态"""
     print()
     print(f"{Colors.CYAN}========================================{Colors.NC}")
-    print(f"{Colors.CYAN}🏭 统一FJSP系统启动完成{Colors.NC}")
+    print(f"{Colors.CYAN}🎉 统一FJSP系统启动完成{Colors.NC}")
     print(f"{Colors.CYAN}========================================{Colors.NC}")
     print()
-    print(f"{Colors.GREEN}📡 后端API服务:{Colors.NC} http://localhost:{BACKEND_PORT}")
-    print(f"{Colors.GREEN}🌐 前端Web应用:{Colors.NC} http://localhost:{FRONTEND_PORT}")
+    print(f"{Colors.GREEN}✅ 推荐访问 (Web界面):{Colors.NC}")
+    print(f"   🌐 {Colors.CYAN}http://localhost:{FRONTEND_PORT}{Colors.NC}")
     print()
-    print(f"{Colors.YELLOW}📋 API文档:{Colors.NC}")
-    print(f"   健康检查: http://localhost:{BACKEND_PORT}/api/health")
-    print(f"   创建实例: POST http://localhost:{BACKEND_PORT}/api/instances")
-    print(f"   求解问题: POST http://localhost:{BACKEND_PORT}/api/solve")
+    print(f"{Colors.BLUE}🔧 后端API服务:{Colors.NC}")
+    print(f"   📡 健康检查: {Colors.CYAN}http://localhost:{BACKEND_PORT}/api/health{Colors.NC}")
+    print(f"   📋 API根路径: {Colors.CYAN}http://localhost:{BACKEND_PORT}/api/{Colors.NC}")
+    print()
+    print(f"{Colors.RED}⚠️  重要提示:{Colors.NC}")
+    print(f"   {Colors.RED}❌ 不要访问{Colors.NC}: http://localhost:{BACKEND_PORT} (会显示404)")
+    print(f"   {Colors.GREEN}✅ 请使用{Colors.NC}: http://localhost:{FRONTEND_PORT} (完整Web界面)")
+    print()
+    print(f"{Colors.YELLOW}🧪 快速测试:{Colors.NC}")
+    print(f"   curl http://localhost:{BACKEND_PORT}/api/health")
     print()
     print(f"{Colors.YELLOW}🛑 停止服务:{Colors.NC}")
     print(f"   按 Ctrl+C 或运行: python {sys.argv[0]} stop")
