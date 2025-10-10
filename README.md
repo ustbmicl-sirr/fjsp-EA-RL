@@ -1,22 +1,26 @@
 # 🏭 FJSP统一求解与可视化系统
 
 for changqi，集成多种算法、支持实时可视化的柔性作业车间调度问题(FJSP)研究平台，融合进化算法、强化学习和约束编程方法。
+
 柔性作业车间调度（FJSP），核心是两类决策：
+
 - 任务分配：每道工序选择哪台可加工机器。
-- 顺序调度：在所选机器上的加工次序。 
+- 顺序调度：在所选机器上的加工次序。
 
 ## 🎯 项目结构
 
 ### 🔬 研究框架 (`src/fjsp/`)
+
 轻量级的FJSP研究框架，专注于算法原型开发和学术研究：
 
 - 📊 数据处理和实例加载
-- 🔍 特征工程和策略推荐  
+- 🔍 特征工程和策略推荐
 - 🧬 优化算法实现 (BWO, NSGA-II)
 - 📈 性能指标和实验框架
 - 🎨 基础可视化功能
 
 ### 🏭 统一系统 (`unified_fjsp_system/`)
+
 生产就绪的完整FJSP求解系统：
 
 - 🌐 Web界面 (Streamlit + Flask)
@@ -26,6 +30,7 @@ for changqi，集成多种算法、支持实时可视化的柔性作业车间调
 - 🔧 智能启动和环境管理
 
 ### 📚 完整文档 (`documentation/`)
+
 系统化的项目文档：
 
 - 🏗️ [软件设计规范](documentation/design/FJSP_SOFTWARE_DESIGN_SPECIFICATION.md)
@@ -36,6 +41,7 @@ for changqi，集成多种算法、支持实时可视化的柔性作业车间调
 ## 🚀 快速开始
 
 ### 1. 启动统一系统
+
 ```bash
 cd unified_fjsp_system
 ./start_system.sh
@@ -44,12 +50,14 @@ cd unified_fjsp_system
 访问Web界面: <http://localhost:8501>
 
 ### 2. 使用研究框架
+
 ```bash
 cd examples
 python run_nsga2_example.py
 ```
 
 ### 3. 查看文档
+
 - 📖 [快速使用指南](documentation/guides/SYSTEM_SUMMARY_AND_USAGE.md)
 - 🏗️ [完整设计文档](documentation/design/FJSP_SOFTWARE_DESIGN_SPECIFICATION.md)
 
@@ -117,12 +125,18 @@ fjsp-EA-RL/
 ├── 📖 README.md                              # 项目主文档
 ├── 🤖 CLAUDE.md                              # Claude Code使用指南
 │
-├── 📚 documentation/                         # 完整文档中心
-│   ├── api/                                  # API参考文档
+├── 📚 documentation/                         # 核心文档中心
+│   ├── README.md                             # 文档导航
+│   ├── api/api_reference.md                  # API参考文档
 │   ├── design/                               # 软件设计规范
-│   └── guides/                               # 系统使用指南
+│   │   ├── FJSP_SOFTWARE_DESIGN_SPECIFICATION.md
+│   │   └── MULTI_OBJECTIVE_EXTENSION_GUIDE.md
+│   └── guides/                               # 使用指南
+│       ├── SYSTEM_SUMMARY_AND_USAGE.md
+│       └── fjsp-resources.md
 │
 ├── 🔬 src/fjsp/                              # 研究框架 (轻量级)
+│   ├── README.md                             # 框架说明
 │   ├── data/                                 # 数据处理和实例加载
 │   ├── features/                             # 特征工程和提取
 │   ├── optimizers/                           # 优化算法 (BWO, NSGA-II)
@@ -132,24 +146,26 @@ fjsp-EA-RL/
 │   └── vis/                                  # 基础可视化
 │
 ├── 🏭 unified_fjsp_system/                   # 统一系统 (生产就绪)
-│   ├── 🧠 algorithms/                        # 多算法集成
-│   │   └── unified_solver.py                 # 统一求解器管理
-│   ├── 🔧 core/                              # 核心数据适配
-│   │   └── data_adapter.py                   # 格式转换和图构建
-│   ├── 🎨 visualization/                     # 交互式可视化
-│   │   └── unified_visualizer.py             # 甘特图、析取图、帕累托前沿
-│   ├── 🌐 web/                               # Web界面
+│   ├── README.md                             # 系统说明
+│   ├── algorithms/unified_solver.py          # 多算法集成
+│   ├── core/data_adapter.py                  # 核心数据适配
+│   ├── visualization/unified_visualizer.py   # 交互式可视化
+│   ├── web/                                  # Web界面
 │   │   ├── backend/flask_api.py              # Flask API后端
 │   │   └── streamlit_app.py                  # Streamlit前端
-│   ├── 🚀 scripts/                           # 智能启动脚本
+│   ├── scripts/                              # 启动脚本
 │   │   ├── start_system.sh                   # Shell启动脚本
 │   │   ├── start_system.py                   # Python启动脚本
-│   │   └── start_system.bat                  # Windows批处理
-│   ├── 📝 examples/                          # 使用示例
-│   ├── 🧪 tests/                             # 测试套件
-│   ├── 📋 docs/                              # 系统文档
-│   ├── ⚙️ requirements.txt                   # Python依赖
-│   └── 🐍 environment.yml                    # Conda环境
+│   │   ├── start_system.bat                  # Windows批处理
+│   │   └── test_frontend_backend.py          # 功能测试
+│   ├── examples/                             # 使用示例
+│   ├── tests/                                # 测试套件
+│   ├── docs/                                 # 系统文档
+│   │   ├── QUICK_START.md
+│   │   ├── DEPLOYMENT_GUIDE.md
+│   │   └── DISJUNCTIVE_GRAPH_TEST_GUIDE.md
+│   ├── requirements.txt                      # Python依赖
+│   └── environment.yml                       # Conda环境
 │
 ├── 📚 reference_libs/                        # 第三方参考库
 │   ├── job_shop_lib/                         # JobShopLib集成
